@@ -19,6 +19,7 @@ final class NetworkManager: NetworkRepository {
 ```
 
 ```swift
+// 단일 이미지
 // Presentation/RandomImageScene/Custom/ImageStack.swift
 
    ...
@@ -28,6 +29,20 @@ final class NetworkManager: NetworkRepository {
             photoView.image = UIImage(systemName: Literal.defaultPhoto)!
             let imageData = try await networkRepository.fetchImage()
             photoView.image = UIImage(data: imageData)!
+        }
+    }
+
+// 전체 이미지
+// Presentation/RandomImageScene/RandomImageLoadingController.swift
+
+    @objc private func loadAllImages() {
+        imageStacks.arrangedSubviews.forEach { imageStack in
+            guard let photoView = imageStack.subviews.first as? UIImageView else { return }
+            Task(priority: .background) {
+                photoView.image = UIImage(systemName: Literal.defaultPhoto)!
+                let data = try await networkManager.fetchImage()
+                photoView.image = UIImage(data: data)!
+            }
         }
     }
 ```
