@@ -8,10 +8,16 @@
 import Foundation
 
 final class NetworkManager: NetworkRepository {
+    private enum FetchError: Error {
+        case invalidAPIURL
+        case invalidImageURL
+    }
+
     func fetchImage() async throws -> Data {
-        let (data, _) = try await URLSession.shared.data(from: URL(string: Literal.randomImageAPI)!)
+        guard let apiURL = URL(string: Literal.randomImageAPI) else { throw FetchError.invalidAPIURL }
+        let (data, _) = try await URLSession.shared.data(from: apiURL)
         let randomImage = try JSONDecoder().decode(RandomImage.self, from: data)
-        let imageURL = URL(string: randomImage.urlString)!
+        guard let imageURL = URL(string: randomImage.urlString) else { throw FetchError.invalidImageURL }
         let (imageData, _) = try await URLSession.shared.data(from: imageURL)
         return imageData
     }
@@ -25,10 +31,10 @@ final class NetworkManager: NetworkRepository {
    ...
 
     @objc private func loadImage() {
-        Task(priority: .background) {
-            photoView.image = UIImage(systemName: Literal.defaultPhoto)!
+        Task {
+            photoView.image = UIImage(systemName: Literal.defaultPhoto) ?? UIImage()
             let imageData = try await networkRepository.fetchImage()
-            photoView.image = UIImage(data: imageData)!
+            photoView.image = UIImage(data: imageData) ?? UIImage()
         }
     }
 
@@ -38,10 +44,10 @@ final class NetworkManager: NetworkRepository {
     @objc private func loadAllImages() {
         imageStacks.arrangedSubviews.forEach { imageStack in
             guard let photoView = imageStack.subviews.first as? UIImageView else { return }
-            Task(priority: .background) {
-                photoView.image = UIImage(systemName: Literal.defaultPhoto)!
+            Task {
+                photoView.image = UIImage(systemName: Literal.defaultPhoto) ?? UIImage()
                 let data = try await networkManager.fetchImage()
-                photoView.image = UIImage(data: data)!
+                photoView.image = UIImage(data: data) ?? UIImage()
             }
         }
     }
