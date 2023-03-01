@@ -37,7 +37,7 @@ final class RandomImageLoadingController: UIViewController {
             Task(priority: .background) {
                 photoView.image = UIImage(systemName: Literal.defaultPhoto)!
                 let data = try await networkManager.fetchImage()
-                photoView.image = UIImage(data: data)!
+                photoView.image = UIImage(data: data) ?? UIImage()
             }
         }
     }

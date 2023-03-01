@@ -8,10 +8,16 @@
 import Foundation
 
 final class NetworkManager: NetworkRepository {
+    private enum FetchError: Error {
+        case invalidAPIURL
+        case invalidImageURL
+    }
+
     func fetchImage() async throws -> Data {
-        let (data, _) = try await URLSession.shared.data(from: URL(string: Literal.randomImageAPI)!)
+        guard let apiURL = URL(string: Literal.randomImageAPI) else { throw FetchError.invalidAPIURL }
+        let (data, _) = try await URLSession.shared.data(from: apiURL)
         let randomImage = try JSONDecoder().decode(RandomImage.self, from: data)
-        let imageURL = URL(string: randomImage.urlString)!
+        guard let imageURL = URL(string: randomImage.urlString) else { throw FetchError.invalidImageURL }
         let (imageData, _) = try await URLSession.shared.data(from: imageURL)
         return imageData
     }

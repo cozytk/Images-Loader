@@ -9,7 +9,7 @@ import UIKit
 
 final class PhotoView: UIImageView {
     private let defaultPhoto: UIImage = {
-        let image = UIImage(systemName: Literal.defaultPhoto)!
+        let image = UIImage(systemName: Literal.defaultPhoto) ?? UIImage()
         return image
     }()
 
