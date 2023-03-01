@@ -39,18 +39,18 @@ final class ImageStack: UIStackView {
 
     private func render() {
         photoView.snp.makeConstraints {
-            $0.height.equalTo(80)
+            $0.height.equalTo(100)
             $0.width.equalTo(160)
         }
 
         progressView.snp.makeConstraints {
-            $0.height.equalTo(10)
-            $0.width.equalTo(100)
+            $0.height.equalTo(8)
+            $0.width.equalTo(120)
         }
 
         loadButton.snp.makeConstraints {
-            $0.height.equalTo(50)
-            $0.width.equalTo(100)
+            $0.height.equalTo(40)
+            $0.width.equalTo(80)
         }
     }
 

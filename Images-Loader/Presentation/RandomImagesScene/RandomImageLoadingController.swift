@@ -45,6 +45,7 @@ final class RandomImageLoadingController: UIViewController {
     private func render() {
         view.addSubview(imageStacks)
         imageStacks.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.horizontalEdges.equalToSuperview().inset(16)
         }
 
@@ -52,6 +53,7 @@ final class RandomImageLoadingController: UIViewController {
         loadAllImagesButton.snp.makeConstraints {
             $0.top.equalTo(imageStacks.snp.bottom).offset(16)
             $0.horizontalEdges.equalToSuperview().inset(16)
+            $0.height.equalTo(40)
         }
     }
 }

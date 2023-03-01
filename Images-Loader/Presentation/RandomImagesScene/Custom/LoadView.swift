@@ -24,6 +24,6 @@ class LoadButton: UIButton {
 
     private func configUI() {
         backgroundColor = .systemBlue
-        layer.cornerRadius = 10
+        layer.cornerRadius = 8
     }
 }
