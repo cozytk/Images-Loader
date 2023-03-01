@@ -65,8 +65,8 @@ final class ImageStack: UIStackView {
     }
 
     @objc private func loadImage() {
-        Task(priority: .background) {
-            photoView.image = UIImage(systemName: Literal.defaultPhoto)!
+        Task {
+            photoView.image = UIImage(systemName: Literal.defaultPhoto) ?? UIImage()
             let imageData = try await networkRepository.fetchImage()
             photoView.image = UIImage(data: imageData) ?? UIImage()
         }

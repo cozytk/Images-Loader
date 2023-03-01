@@ -34,8 +34,8 @@ final class RandomImageLoadingController: UIViewController {
     @objc private func loadAllImages() {
         imageStacks.arrangedSubviews.forEach { imageStack in
             guard let photoView = imageStack.subviews.first as? UIImageView else { return }
-            Task(priority: .background) {
-                photoView.image = UIImage(systemName: Literal.defaultPhoto)!
+            Task {
+                photoView.image = UIImage(systemName: Literal.defaultPhoto) ?? UIImage()
                 let data = try await networkManager.fetchImage()
                 photoView.image = UIImage(data: data) ?? UIImage()
             }
